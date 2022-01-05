@@ -23,7 +23,7 @@ pygame.display.set_caption('Snake')
 
 # Criação da cobrinha
 
-snake = [(200, WINDOW_HEIGHT/2), (210, WINDOW_HEIGHT/2), (220, WINDOW_HEIGHT/2)]
+snake = [(300, WINDOW_HEIGHT/2), (300, WINDOW_HEIGHT/2), (300, WINDOW_HEIGHT/2)]
 skin_snake = pygame.Surface((10, 10))
 skin_snake.fill((255, 255, 255)) # Branco RGB
 
@@ -35,9 +35,9 @@ clock = pygame.time.Clock()
 
 # Função que realmente movimenta a cobrinha
 
-"""def moviment(key_pressed):
-    for i in range(len(snake) - 1, 0, -1):
-        snake[i] = (snake[i-1][0],snake[i-1][1])
+def moviment(key_pressed):
+    for i in range(-1,len(snake)-1):
+        snake[i] = (snake[i-1][0], snake[i-1][1])
 
         if key_pressed == UP:
             snake[0] = (snake[0][0], snake[0][1] - 10)
@@ -47,39 +47,26 @@ clock = pygame.time.Clock()
             snake[0] = (snake[0][0] + 10, snake[0][1])
         if key_pressed == LEFT:
             snake[0] = (snake[0][0] - 10, snake[0][1])
-"""
+
 while True:
-    clock.tick(10)
+    clock.tick(7)
     for event in pygame.event.get():
         if event.type == QUIT:
             exit()
 
-        # Movimentação da cobra TODO Elaborar uma função para essa movimentação
+        if event.type == KEYDOWN:
+            if event.key == K_UP:
+                snake_direction = UP
+            if event.key == K_DOWN:
+                snake_direction = DOWN
+            if event.key == K_LEFT:
+                snake_direction = LEFT
+            if event.key == K_RIGHT:
+                snake_direction = RIGHT
 
-    if event.type == KEYDOWN:
-        if event.type == K_UP:
-                snake_direction == UP
-        if event.type == K_DOWN:
-                snake_direction == DOWN
-        if event.type == K_LEFT:
-                snake_direction == LEFT
-        if event.type == K_RIGHT:
-                snake_direction == RIGHT
-
-    for i in range(len(snake) - 1, 0, -1):
-        snake[i] = (snake[i - 1][0], snake[i - 1][1])
-
-        if snake_direction == UP:
-            snake[0] = (snake[0][0], snake[0][1] - 10)
-        if snake_direction == DOWN:
-            snake[0] = (snake[0][0], snake[0][1] + 10)
-        if snake_direction == RIGHT:
-            snake[0] = (snake[0][0] + 10, snake[0][1])
-        if snake_direction == LEFT:
-            snake[0] = (snake[0][0] - 10, snake[0][1])
+    moviment(snake_direction)
 
     game_screen.fill((155, 204, 153)) # Cor do campo Verde RGB
-
     for pos in snake:
         game_screen.blit(skin_snake, pos)
     pygame.display.update()
