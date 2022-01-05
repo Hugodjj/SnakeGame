@@ -36,8 +36,8 @@ clock = pygame.time.Clock()
 # Função que realmente movimenta a cobrinha
 
 def moviment(key_pressed):
-    for i in range(-1, len(snake) - 1):
-        snake[i] = (snake[i - 1][0], snake[i - 1][1])
+        for i in range(len(snake) - 1, 0, -1):
+            snake[i] = (snake[i - 1][0], snake[i - 1][1])
 
         if key_pressed == UP:
             snake[0] = (snake[0][0], snake[0][1] - 10)
@@ -47,18 +47,23 @@ def moviment(key_pressed):
             snake[0] = (snake[0][0] + 10, snake[0][1])
         if key_pressed == LEFT:
             snake[0] = (snake[0][0] - 10, snake[0][1])
-
+        
 
 # Função para auxiliar na criação de uma maça em posição aleatória
 
-def create_apple():
-    x = random.randint(0, 590)
-    y = random.randint(0, 590)
-    return x, y
+def create_random_apple():
+    x = random.randint(0,59)
+    y = random.randint(0,59)
+    return (x * 10, y * 10)
 
 
+# Função para auxiliar a detecção de colisão entre dois objetos
 
-apple_position = create_apple()
+def collision(obj1, obj2):
+    return (obj1[0] == obj2[0]) and (obj1[1] == obj2[1])
+
+
+apple_position = create_random_apple()
 apple = pygame.Surface((10, 10))
 apple.fill((255, 0, 0))
 
@@ -85,6 +90,7 @@ while True:
 
     game_screen.fill((155, 204, 153))  # Cor do campo Verde RGB
     game_screen.blit(apple, apple_position)
+
     for pos in snake:
         game_screen.blit(skin_snake, pos)
     pygame.display.update()
