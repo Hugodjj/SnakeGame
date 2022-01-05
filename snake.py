@@ -24,7 +24,7 @@ pygame.display.set_caption('Snake')
 # Criação da cobrinha
 
 snake = [(300, WINDOW_HEIGHT/2), (300, WINDOW_HEIGHT/2), (300, WINDOW_HEIGHT/2)]
-skin_snake = pygame.Surface((10, 10))
+skin_snake = pygame.Surface((15, 15))
 skin_snake.fill((255, 255, 255)) # Branco RGB
 
 snake_direction = LEFT
@@ -49,19 +49,21 @@ def moviment(key_pressed):
             snake[0] = (snake[0][0] - 10, snake[0][1])
 
 while True:
-    clock.tick(7)
+    clock.tick(10)
     for event in pygame.event.get():
         if event.type == QUIT:
             exit()
 
+# Lógica para detecção de ação
+
         if event.type == KEYDOWN:
-            if event.key == K_UP:
+            if event.key == K_UP and snake_direction != DOWN:
                 snake_direction = UP
-            if event.key == K_DOWN:
+            elif event.key == K_DOWN and snake_direction != UP:
                 snake_direction = DOWN
-            if event.key == K_LEFT:
+            elif event.key == K_LEFT and snake_direction != RIGHT:
                 snake_direction = LEFT
-            if event.key == K_RIGHT:
+            elif event.key == K_RIGHT and snake_direction != LEFT:
                 snake_direction = RIGHT
 
     moviment(snake_direction)
