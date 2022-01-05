@@ -47,7 +47,7 @@ def moviment(key_pressed):
             snake[0] = (snake[0][0] + 10, snake[0][1])
         if key_pressed == LEFT:
             snake[0] = (snake[0][0] - 10, snake[0][1])
-        
+
 
 # Função para auxiliar na criação de uma maça em posição aleatória
 
@@ -62,6 +62,8 @@ def create_random_apple():
 def collision(obj1, obj2):
     return (obj1[0] == obj2[0]) and (obj1[1] == obj2[1])
 
+font = pygame.font.Font('freesansbold.ttf', 18)
+score = 0
 
 apple_position = create_random_apple()
 apple = pygame.Surface((10, 10))
@@ -86,10 +88,23 @@ while True:
             elif event.key == K_RIGHT and snake_direction != LEFT:
                 snake_direction = RIGHT
 
+    if collision(snake[0],apple_position):
+        snake.append((0,0))
+        apple_position = create_random_apple()
+        score += 1
+
     moviment(snake_direction)
 
     game_screen.fill((155, 204, 153))  # Cor do campo Verde RGB
-    game_screen.blit(apple, apple_position)
+    game_screen.blit(apple, apple_position) # Colocando a maça visivel na tela
+
+
+    # Posicionando pontuação na tela e atualizando toda vez que comer uma maça
+
+    score_font = font.render('Score: %s' % (score), True, (255, 255, 255))
+    score_rect = score_font.get_rect()
+    score_rect.topleft = (500, 10)
+    game_screen.blit(score_font, score_rect)
 
     for pos in snake:
         game_screen.blit(skin_snake, pos)
