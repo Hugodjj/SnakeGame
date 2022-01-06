@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 import random
-
+import time
 # Constantes que definem o tamanho da janela.
 
 WINDOW_WIDTH = 600
@@ -23,6 +23,7 @@ game_over = False
 white = ((255, 255, 255))
 green = ((155, 204, 153))
 red = ((255, 0, 0))
+black = pygame.Color(0, 0, 0)
 
 # Pontuação
 
@@ -81,12 +82,24 @@ apple_position = create_random_apple()
 apple = pygame.Surface((10, 10))
 apple.fill(red)
 
+def game_over_window():
+    font = pygame.font.SysFont('times new roman', 60)
+    game_over_surface =  font.render('GAME OVER',True, red)
+    game_over_rect = game_over_surface.get_rect()
+    game_over_rect.center = (WINDOW_WIDTH/2, WINDOW_WIDTH/2)
+    game_screen.fill(black)
+    game_screen.blit(game_over_surface,game_over_rect)
+    show_score(0)
+    pygame.display.flip()
+    time.sleep(1)
+    pygame.quit()
+    exit()
+
 # Função que checa se a cobra atingiu a borda
 
 def hit_edge(snake):
     if snake[0][0] == WINDOW_HEIGHT or snake[0][0] == WINDOW_WIDTH or snake[0][0] < 0 or snake[0][1] < 0:
-        pygame.quit()
-        exit()
+        game_over_window()
 
 
 # Função que checa se a cobra atingiu o próprio corpo
@@ -99,13 +112,20 @@ def hit_self(snake):
 """
 # Mostra a pontuação na tela
 
-def show_score():
+def show_score(position):
 
-    font = pygame.font.Font('times new roman', 18)
-    score_font = font.render('Score: %s' % (score), True, (255, 255, 255))
+    font = pygame.font.SysFont('times new roman', 35)
+    score_font = font.render('Score: %s' % (score), True, (white))
     score_rect = score_font.get_rect()
-    score_rect.topleft = (500, 10)
+
+    if position == 1:
+        score_rect.topright = (590, 10)
+    else:
+        score_rect.midbottom = (300,400)
+        score_font = font.render('Score: %s' % (score), True, (red))
     game_screen.blit(score_font, score_rect)
+
+
 
 def show_snake_in_screen():
     for pos in snake:
@@ -142,6 +162,6 @@ while True:
     game_screen.fill(green)
     game_screen.blit(apple, apple_position) # Colocando a maça visivel na tela
 
-    show_score()
+    show_score(1)
     show_snake_in_screen()
     pygame.display.update()
