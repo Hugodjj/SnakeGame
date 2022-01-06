@@ -82,6 +82,8 @@ apple_position = create_random_apple()
 apple = pygame.Surface((10, 10))
 apple.fill(red)
 
+# Função da tela de game over
+
 def game_over_window():
     font = pygame.font.SysFont('times new roman', 60)
     game_over_surface =  font.render('GAME OVER',True, red)
