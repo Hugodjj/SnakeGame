@@ -34,6 +34,8 @@ score = 0
 
 pygame.init()
 game_screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+bg_img = pygame.image.load('bg.jpg')
+bg_img = pygame.transform.scale(bg_img,(WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption('Snake')
 
 # Criação da cobrinha
@@ -89,7 +91,7 @@ apple.fill(red)
 # Função da tela de game over
 
 def game_over_window():
-    font = pygame.font.SysFont('times new roman', 60)
+    font = pygame.font.SysFont('Game Over', 60)
     game_over_surface = font.render('GAME OVER', True, red)
     game_over_rect = game_over_surface.get_rect()
     game_over_rect.center = (WINDOW_WIDTH / 2, WINDOW_WIDTH / 2)
@@ -97,7 +99,7 @@ def game_over_window():
     game_screen.blit(game_over_surface, game_over_rect)
     show_score(0)
     pygame.display.flip()
-    time.sleep(1)
+    time.sleep(2)
     pygame.quit()
     exit()
 
@@ -112,23 +114,22 @@ def hit_edge(snake):
 # Função que checa se a cobra atingiu o próprio corpo
 
 def hit_self(snake):
-    for i in range(1,len(snake)-1):
+    for i in range(1, len(snake) - 1):
         if snake[0][0] == snake[i][0] and snake[0][1] == snake[i][1]:
             game_over_window()
-
 
 
 # Mostra a pontuação na tela
 
 def show_score(position):
-    font = pygame.font.SysFont('times new roman', 35)
+    font = pygame.font.SysFont('game_over.ttf', 35)
     score_font = font.render('Score: %s' % score, True, white)
     score_rect = score_font.get_rect()
 
     if position == 1:
         score_rect.topright = (590, 10)
     else:
-        score_rect.midbottom = (WINDOW_HEIGHT/2, WINDOW_WIDTH/1.5)
+        score_rect.midbottom = (WINDOW_HEIGHT / 2, WINDOW_WIDTH / 1.5)
         score_font = font.render('Score: %s' % score, True, red)
     game_screen.blit(score_font, score_rect)
 
@@ -136,6 +137,16 @@ def show_score(position):
 def show_snake_in_screen():
     for pos in snake:
         game_screen.blit(skin_snake, pos)
+
+
+def principal_window():
+    font = pygame.font.SysFont('times new roman', 60)
+    principal_window_surface = font.render('SNAKE GAME', True, white)
+    principal_window_rect = principal_window_surface.get_rect()
+    principal_window_rect.center = (WINDOW_WIDTH / 2, WINDOW_WIDTH / 2)
+    game_screen.fill(green)
+    game_screen.blit(principal_window_surface, principal_window_rect)
+    pygame.display.flip()
 
 
 while True:
@@ -166,7 +177,7 @@ while True:
     hit_self(snake)
     moviment(snake_direction)
 
-    game_screen.fill(green)
+    game_screen.blit(bg_img,(0,0))
     game_screen.blit(apple, apple_position)  # Colocando a maça visivel na tela
 
     show_score(1)
