@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 import random
 import time
+
 # Constantes que definem o tamanho da janela.
 
 WINDOW_WIDTH = 600
@@ -20,9 +21,9 @@ game_over = False
 
 # Constantes cores RGB
 
-white = ((255, 255, 255))
-green = ((155, 204, 153))
-red = ((255, 0, 0))
+white = (255, 255, 255)
+green = (155, 204, 153)
+red = (255, 0, 0)
 black = pygame.Color(0, 0, 0)
 
 # Pontuação
@@ -37,11 +38,11 @@ pygame.display.set_caption('Snake')
 
 # Criação da cobrinha
 
-snake = [(300, WINDOW_HEIGHT / 2), (300, WINDOW_HEIGHT / 2), (300, WINDOW_HEIGHT / 2)]
+snake = [(300, 300), (310, 300), (320, 300)]
 skin_snake = pygame.Surface((10, 10))
 skin_snake.fill(white)
 
-#Direção inicial da cobrinha
+# Direção inicial da cobrinha
 
 snake_direction = LEFT
 
@@ -49,28 +50,29 @@ snake_direction = LEFT
 
 fps_controll = pygame.time.Clock()
 
+
 # Função que realmente movimenta a cobrinha
 
 def moviment(key_pressed):
-        for i in range(len(snake) - 1, 0, -1):
-            snake[i] = (snake[i - 1][0], snake[i - 1][1])
+    for i in range(len(snake) - 1, 0, -1):
+        snake[i] = (snake[i - 1][0], snake[i - 1][1])
 
-        if key_pressed == UP:
-            snake[0] = (snake[0][0], snake[0][1] - 10)
-        if key_pressed == DOWN:
-            snake[0] = (snake[0][0], snake[0][1] + 10)
-        if key_pressed == RIGHT:
-            snake[0] = (snake[0][0] + 10, snake[0][1])
-        if key_pressed == LEFT:
-            snake[0] = (snake[0][0] - 10, snake[0][1])
+    if key_pressed == UP:
+        snake[0] = (snake[0][0], snake[0][1] - 10)
+    if key_pressed == DOWN:
+        snake[0] = (snake[0][0], snake[0][1] + 10)
+    if key_pressed == RIGHT:
+        snake[0] = (snake[0][0] + 10, snake[0][1])
+    if key_pressed == LEFT:
+        snake[0] = (snake[0][0] - 10, snake[0][1])
 
 
 # Função para auxiliar na criação de uma maça em posição aleatória
 
 def create_random_apple():
-    x = random.randint(0,59)
-    y = random.randint(0,59)
-    return (x * 10, y * 10)
+    x = random.randint(0, 59)
+    y = random.randint(0, 59)
+    return x * 10, y * 10
 
 
 # Função para auxiliar a detecção de colisão entre dois objetos
@@ -78,24 +80,27 @@ def create_random_apple():
 def collision(obj1, obj2):
     return (obj1[0] == obj2[0]) and (obj1[1] == obj2[1])
 
+
 apple_position = create_random_apple()
 apple = pygame.Surface((10, 10))
 apple.fill(red)
+
 
 # Função da tela de game over
 
 def game_over_window():
     font = pygame.font.SysFont('times new roman', 60)
-    game_over_surface =  font.render('GAME OVER',True, red)
+    game_over_surface = font.render('GAME OVER', True, red)
     game_over_rect = game_over_surface.get_rect()
-    game_over_rect.center = (WINDOW_WIDTH/2, WINDOW_WIDTH/2)
+    game_over_rect.center = (WINDOW_WIDTH / 2, WINDOW_WIDTH / 2)
     game_screen.fill(black)
-    game_screen.blit(game_over_surface,game_over_rect)
+    game_screen.blit(game_over_surface, game_over_rect)
     show_score(0)
     pygame.display.flip()
     time.sleep(1)
     pygame.quit()
     exit()
+
 
 # Função que checa se a cobra atingiu a borda
 
@@ -105,33 +110,33 @@ def hit_edge(snake):
 
 
 # Função que checa se a cobra atingiu o próprio corpo
-"""
+
 def hit_self(snake):
     for i in range(1,len(snake)-1):
         if snake[0][0] == snake[i][0] and snake[0][1] == snake[i][1]:
-            pygame.quit()
-            exit()
-"""
+            game_over_window()
+
+
+
 # Mostra a pontuação na tela
 
 def show_score(position):
-
     font = pygame.font.SysFont('times new roman', 35)
-    score_font = font.render('Score: %s' % (score), True, (white))
+    score_font = font.render('Score: %s' % score, True, white)
     score_rect = score_font.get_rect()
 
     if position == 1:
         score_rect.topright = (590, 10)
     else:
-        score_rect.midbottom = (300,400)
-        score_font = font.render('Score: %s' % (score), True, (red))
+        score_rect.midbottom = (WINDOW_HEIGHT/2, WINDOW_WIDTH/1.5)
+        score_font = font.render('Score: %s' % score, True, red)
     game_screen.blit(score_font, score_rect)
-
 
 
 def show_snake_in_screen():
     for pos in snake:
         game_screen.blit(skin_snake, pos)
+
 
 while True:
 
@@ -153,16 +158,16 @@ while True:
                 snake_direction = RIGHT
 
     if collision(snake[0], apple_position):
-        snake.append((0,0))
+        snake.append((0, 0))
         apple_position = create_random_apple()
         score += 1
 
     hit_edge(snake)
-    #hit_self(snake)
+    hit_self(snake)
     moviment(snake_direction)
 
     game_screen.fill(green)
-    game_screen.blit(apple, apple_position) # Colocando a maça visivel na tela
+    game_screen.blit(apple, apple_position)  # Colocando a maça visivel na tela
 
     show_score(1)
     show_snake_in_screen()
