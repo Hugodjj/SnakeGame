@@ -76,6 +76,9 @@ def hit_edge(snake):
         pygame.quit()
         exit()
 
+def hit_self(snake):
+    pass
+
 while True:
 
     clock.tick(10)
