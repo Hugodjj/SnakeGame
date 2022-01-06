@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 import random
 
-# Constantes que definem o tamanho da janela. Facilita caso haja alterações no futuro
+# Constantes que definem o tamanho da janela.
 
 WINDOW_WIDTH = 600
 WINDOW_HEIGHT = 600
@@ -14,6 +14,16 @@ RIGHT = 1
 DOWN = 2
 LEFT = 3
 
+# Constante para melhorar leitura do jogo
+
+game_over = False
+
+# Constantes cores RGB
+
+white = ((255, 255, 255))
+green = ((155, 204, 153))
+red = ((255, 0, 0))
+
 # Lógica para a criação da janela do jogo.
 
 pygame.init()
@@ -24,13 +34,15 @@ pygame.display.set_caption('Snake')
 
 snake = [(300, WINDOW_HEIGHT / 2), (300, WINDOW_HEIGHT / 2), (300, WINDOW_HEIGHT / 2)]
 skin_snake = pygame.Surface((10, 10))
-skin_snake.fill((255, 255, 255))  # Branco RGB
+skin_snake.fill(white)
+
+#Direção inicial da cobrinha
 
 snake_direction = LEFT
 
-# Clock para diminuir a rapidez da cobrinha
+# Controle de FPS
 
-clock = pygame.time.Clock()
+fps_controll = pygame.time.Clock()
 
 
 # Função que realmente movimenta a cobrinha
@@ -67,27 +79,27 @@ score = 0
 
 apple_position = create_random_apple()
 apple = pygame.Surface((10, 10))
-apple.fill((255, 0, 0))
+apple.fill(red)
 
 # Função que checa se a cobra atingiu a borda
-
+"""
 def hit_edge(snake):
     if snake[0][0] == WINDOW_HEIGHT or snake[0][0] == WINDOW_WIDTH or snake[0][0] < 0 or snake[0][1] < 0:
         pygame.quit()
         exit()
+"""
 
 # Função que checa se a cobra atingiu o próprio corpo
 
-
 def hit_self(snake):
-    for i in range(2, len(snake)-2):
+    for i in range(1,len(snake)-1):
         if snake[0][0] == snake[i][0] and snake[0][1] == snake[i][1]:
             pygame.quit()
             exit()
 
 while True:
 
-    clock.tick(10)
+    fps_controll.tick(10)
     for event in pygame.event.get():
         if event.type == QUIT:
             exit()
@@ -109,11 +121,12 @@ while True:
         apple_position = create_random_apple()
         score += 1
 
-    hit_edge(snake)
+    #hit_edge(snake)
+
     hit_self(snake)
     moviment(snake_direction)
 
-    game_screen.fill((155, 204, 153))  # Cor do campo Verde RGB
+    game_screen.fill(green)
     game_screen.blit(apple, apple_position) # Colocando a maça visivel na tela
 
 
