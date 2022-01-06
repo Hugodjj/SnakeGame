@@ -69,6 +69,13 @@ apple_position = create_random_apple()
 apple = pygame.Surface((10, 10))
 apple.fill((255, 0, 0))
 
+# Função que checa se a cobra atingiu a borda
+
+def hit_edge(snake):
+    if snake[0][0] == WINDOW_HEIGHT or snake[0][0] == WINDOW_WIDTH or snake[0][0] < 0 or snake[0][1] < 0:
+        pygame.quit()
+        exit()
+
 while True:
 
     clock.tick(10)
@@ -88,11 +95,12 @@ while True:
             elif event.key == K_RIGHT and snake_direction != LEFT:
                 snake_direction = RIGHT
 
-    if collision(snake[0],apple_position):
+    if collision(snake[0], apple_position):
         snake.append((0,0))
         apple_position = create_random_apple()
         score += 1
 
+    hit_edge(snake)
     moviment(snake_direction)
 
     game_screen.fill((155, 204, 153))  # Cor do campo Verde RGB
