@@ -24,6 +24,10 @@ white = ((255, 255, 255))
 green = ((155, 204, 153))
 red = ((255, 0, 0))
 
+# Pontuação
+
+score = 0
+
 # Lógica para a criação da janela do jogo.
 
 pygame.init()
@@ -43,7 +47,6 @@ snake_direction = LEFT
 # Controle de FPS
 
 fps_controll = pygame.time.Clock()
-
 
 # Função que realmente movimenta a cobrinha
 
@@ -74,28 +77,39 @@ def create_random_apple():
 def collision(obj1, obj2):
     return (obj1[0] == obj2[0]) and (obj1[1] == obj2[1])
 
-font = pygame.font.Font('freesansbold.ttf', 18)
-score = 0
-
 apple_position = create_random_apple()
 apple = pygame.Surface((10, 10))
 apple.fill(red)
 
 # Função que checa se a cobra atingiu a borda
-"""
+
 def hit_edge(snake):
     if snake[0][0] == WINDOW_HEIGHT or snake[0][0] == WINDOW_WIDTH or snake[0][0] < 0 or snake[0][1] < 0:
         pygame.quit()
         exit()
-"""
+
 
 # Função que checa se a cobra atingiu o próprio corpo
-
+"""
 def hit_self(snake):
     for i in range(1,len(snake)-1):
         if snake[0][0] == snake[i][0] and snake[0][1] == snake[i][1]:
             pygame.quit()
             exit()
+"""
+# Mostra a pontuação na tela
+
+def show_score():
+
+    font = pygame.font.Font('times new roman', 18)
+    score_font = font.render('Score: %s' % (score), True, (255, 255, 255))
+    score_rect = score_font.get_rect()
+    score_rect.topleft = (500, 10)
+    game_screen.blit(score_font, score_rect)
+
+def show_snake_in_screen():
+    for pos in snake:
+        game_screen.blit(skin_snake, pos)
 
 while True:
 
@@ -121,22 +135,13 @@ while True:
         apple_position = create_random_apple()
         score += 1
 
-    #hit_edge(snake)
-
-    hit_self(snake)
+    hit_edge(snake)
+    #hit_self(snake)
     moviment(snake_direction)
 
     game_screen.fill(green)
     game_screen.blit(apple, apple_position) # Colocando a maça visivel na tela
 
-
-    # Posicionando pontuação na tela e atualizando toda vez que comer uma maça
-
-    score_font = font.render('Score: %s' % (score), True, (255, 255, 255))
-    score_rect = score_font.get_rect()
-    score_rect.topleft = (500, 10)
-    game_screen.blit(score_font, score_rect)
-
-    for pos in snake:
-        game_screen.blit(skin_snake, pos)
+    show_score()
+    show_snake_in_screen()
     pygame.display.update()
