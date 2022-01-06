@@ -76,8 +76,14 @@ def hit_edge(snake):
         pygame.quit()
         exit()
 
+# Função que checa se a cobra atingiu o próprio corpo
+
+
 def hit_self(snake):
-    pass
+    for i in range(2, len(snake)-2):
+        if snake[0][0] == snake[i][0] and snake[0][1] == snake[i][1]:
+            pygame.quit()
+            exit()
 
 while True:
 
@@ -104,6 +110,7 @@ while True:
         score += 1
 
     hit_edge(snake)
+    hit_self(snake)
     moviment(snake_direction)
 
     game_screen.fill((155, 204, 153))  # Cor do campo Verde RGB
