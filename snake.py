@@ -2,7 +2,6 @@ import pygame
 from pygame.locals import *
 import random
 import time
-from pygame import mixer
 
 # Constantes que definem o tamanho da janela.
 
@@ -121,7 +120,7 @@ def game_over_window():
 # Função que checa se a cobra atingiu a borda
 
 def hit_edge(snake):
-    if snake[0][0] == WINDOW_HEIGHT or snake[0][0] == WINDOW_WIDTH or snake[0][0] < 0 or snake[0][1] < 0:
+    if snake[0][0] == WINDOW_HEIGHT or snake[0][1] == WINDOW_WIDTH or snake[0][0] < 0 or snake[0][1] < 0:
         game_over_window()
 
 
