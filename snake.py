@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 import random
 import time
+import os
 
 # Constantes que definem o tamanho da janela.
 
@@ -30,11 +31,17 @@ black = pygame.Color(0, 0, 0)
 
 score = 0
 
+principal_dir = os.path.dirname(__file__)
+img_dir = os.path.join(principal_dir, 'images')
+sounds_dir = os.path.join(principal_dir, 'sounds')
+fonts_dir = os.path.join(principal_dir, 'fonts')
+
+
 # Lógica para a criação da janela do jogo.
 
 pygame.init()
 game_screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-bg_img = pygame.image.load('bg.jpg')
+bg_img = pygame.image.load(os.path.join(img_dir, 'bg.jpg')).convert_alpha()
 bg_img = pygame.transform.scale(bg_img, (WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption('Snake')
 
@@ -42,12 +49,12 @@ pygame.display.set_caption('Snake')
 # Métodos que adicionam efeitos sonoros no jogo
 
 def music_sound():
-    pygame.mixer.music.load('BoxCat Games - CPU Talk.mp3')
+    pygame.mixer.music.load(os.path.join(sounds_dir,'BoxCat Games - CPU Talk.mp3'))
     pygame.mixer.music.play(-1)
 
 
 def colision_sound():
-    sound_colision = pygame.mixer.Sound('smw_coin.wav')
+    sound_colision = pygame.mixer.Sound(os.path.join(sounds_dir,'smw_coin.wav'))
     sound_colision.play()
 
 
@@ -104,7 +111,7 @@ apple.fill(red)
 # Função da tela de game over
 
 def game_over_window():
-    font = pygame.font.Font('game_over.ttf', 200)
+    font = pygame.font.Font((os.path.join(fonts_dir,'game_over.ttf')), 200)
     game_over_surface = font.render('GAME OVER', True, red)
     game_over_rect = game_over_surface.get_rect()
     game_over_rect.center = (WINDOW_WIDTH / 2, WINDOW_WIDTH / 2)
@@ -135,7 +142,7 @@ def hit_self(snake):
 # Mostra a pontuação na tela
 
 def show_score(position):
-    font = pygame.font.Font('game_over.ttf', 75)
+    font = pygame.font.Font((os.path.join(fonts_dir,'game_over.ttf')), 75)
     score_font = font.render('Score: %s' % score, True, white)
     score_rect = score_font.get_rect()
 
