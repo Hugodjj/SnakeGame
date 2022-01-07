@@ -31,11 +31,12 @@ black = pygame.Color(0, 0, 0)
 
 score = 0
 
+# Acessando pastas
+
 principal_dir = os.path.dirname(__file__)
 img_dir = os.path.join(principal_dir, 'images')
 sounds_dir = os.path.join(principal_dir, 'sounds')
 fonts_dir = os.path.join(principal_dir, 'fonts')
-
 
 # Lógica para a criação da janela do jogo.
 
@@ -72,7 +73,6 @@ snake_direction = LEFT
 
 fps_controll = pygame.time.Clock()
 
-
 # Função que realmente movimenta a cobrinha
 
 def moviment(key_pressed):
@@ -96,17 +96,14 @@ def create_random_apple():
     y = random.randint(0, 59)
     return x * 10, y * 10
 
-
 # Função para auxiliar a detecção de colisão entre dois objetos
 
 def collision(obj1, obj2):
     return (obj1[0] == obj2[0]) and (obj1[1] == obj2[1])
 
-
 apple_position = create_random_apple()
 apple = pygame.Surface((10, 10))
 apple.fill(red)
-
 
 # Função da tela de game over
 
@@ -123,7 +120,6 @@ def game_over_window():
     pygame.quit()
     exit()
 
-
 # Função que checa se a cobra atingiu a borda
 
 def hit_edge(snake):
@@ -137,7 +133,6 @@ def hit_self(snake):
     for i in range(1, len(snake) - 1):
         if snake[0][0] == snake[i][0] and snake[0][1] == snake[i][1]:
             game_over_window()
-
 
 # Mostra a pontuação na tela
 
@@ -153,11 +148,9 @@ def show_score(position):
         score_font = font.render('Score: %s' % score, True, red)
     game_screen.blit(score_font, score_rect)
 
-
 def show_snake_in_screen():
     for pos in snake:
         game_screen.blit(skin_snake, pos)
-
 
 def principal_window():
     font = pygame.font.SysFont('times new roman', 60)
@@ -167,7 +160,6 @@ def principal_window():
     game_screen.fill(green)
     game_screen.blit(principal_window_surface, principal_window_rect)
     pygame.display.flip()
-
 
 music_sound()
 while True:
